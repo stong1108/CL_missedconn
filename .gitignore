@@ -1,0 +1,9 @@
+*.pyc
+.idea
+.ipynb_checkpoints
+*.bak
+*.swp
+Untitled.ipynb
+scrum-diary.md
+*.pickle
+sql_records/*
