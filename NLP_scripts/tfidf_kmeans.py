@@ -18,7 +18,8 @@ class MissedConnPosts(object):
         '''
         self.df = df
         self.k = k
-        self.posts = [str(unidecode(p)) for p in df['post'].values]
+        self.posts = [str(unidecode(df['title'].values[i]) + ' ' + \
+            unidecode(df['post'].values[i])) for i in xrange(len(df))]
         self.englishposts = [p for p in self.posts if detect(p) == 'en']
         self.vectorizer = TfidfVectorizer(stop_words='english')
         self.word_vecs = None
@@ -26,10 +27,17 @@ class MissedConnPosts(object):
         self.km = KMeans(n_clusters=self.k)
 
     def fit(self):
-        self.word_vecs = self.fectorizer.fit_transform(self.englishposts)
+        self.word_vecs = self.vectorizer.fit_transform(self.englishposts)
         self.words = self.vectorizer.get_feature_names()
         self.km.fit(self.word_vecs)
 
+    def find_posts(self, word):
+        '''
+        Returns an iterable of posts given a word to search for
+        '''
+        word_ind = self.word_vecs.index(word)
+        match_inds = self.word_vecs[:, word_ind].argsort()
+        matches =
 
     def print_clustered_words(self, n_words=10):
         '''

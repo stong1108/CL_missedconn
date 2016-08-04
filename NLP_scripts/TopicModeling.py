@@ -2,7 +2,7 @@ import pickle
 import numpy as np
 import pandas as pd
 from manage_db import db_to_df
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import NMF
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -14,6 +14,7 @@ class TopicModeling(object):
 
     def __init__(self):
         self.bestdf, self.df_all = self._load_data()
+        self.utexts = None
         self.texts = self._get_texts()
         self.vectorizer = None
         self.X = None
@@ -26,24 +27,13 @@ class TopicModeling(object):
 
         df_all = db_to_df()
 
-        bestdf['post'] = bestdf['post'].apply(lambda x: unidecode(x))
-        df_all['post'] = df_all['post'].apply(lambda x: unidecode(x))
+        uposts = np.concatenate((bestdf['post'].values, df_all['post'].values))
+        utitles = np.concatenate((bestdf['title'].values, bestdf['title']values))
+        utexts = [utitles[i] + ' ' + uposts[i] for i in xrange(len(uposts))]
 
-        return bestdf, df_all
-
-    def _combine_text(self, df):
-        texts = []
-        for i in xrange(len(df)):
-            text = df.loc[i, 'title'] + ' ' + df.loc[i, 'post']
-            texts.append(text)
-        return texts
-
-    def _get_texts(self):
-        texts = np.concatenate((self._combine_text(self.bestdf), self._combine_text(self.df_all)))
-
-        # Only keep english
-        engtexts = [t for t in texts if detect(t) == 'en']
-        return engtexts
+        # only keep english
+        self.utexts = [text for text in utexts if detect(text) == 'en']
+        self.texts = [unidecode(text) for text in self.utexts]
 
     def vectorize(self, ngrams=0):
         if ngrams!=0:
