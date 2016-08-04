@@ -177,14 +177,14 @@ class MissedConn(object):
             str_item = html_to_text(str_item)
             text.extend(str_item.strip().split())
         post = ' '.join(text)
-        phrase = "it's NOT ok to contact this poster with services or other commercial interests"
+        phrase = " it's NOT ok to contact this poster with services or other commercial interests"
         post.replace(phrase, '')
         post.replace('[?]', '', 200) # gets rid of emoji placeholders
-        if 'Location: ' in post:
-            end_ind = post.index('Location: ')
+        if ' Location: ' in post:
+            end_ind = post.index(' Location: ')
             post = post[:end_ind]
-        if '<!-- ' in post:
-            end_ind = post.index('<!-- ')
+        if ' <!-- ' in post:
+            end_ind = post.index(' <!-- ')
             post = post[:end_ind]
         return post
 
