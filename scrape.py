@@ -12,8 +12,8 @@ def scrape_update(city):
     update_db(mc.df)
     print '{} done: {}'.format(city, len(mc.df))
 
-cities = ['atlanta', 'austin', 'boston', 'chicago', 'dallas', 'denver',
-'losangeles', 'miami', 'newyork', 'seattle', 'sfbay', 'washingtondc']
+cities = ['atlanta', 'austin', 'boston', 'chicago', 'dallas', 'denver', 'houston',
+'losangeles', 'miami', 'newyork', 'sandiego', 'seattle', 'sfbay', 'washingtondc']
 
 for city in cities:
     scrape_update(city)

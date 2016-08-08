@@ -1,64 +1,40 @@
+import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import KMeans
 from sklearn.metrics.pairwise import linear_kernel
 from unidecode import unidecode
-import numpy as np
 from langdetect import detect
 
-class MissedConnPosts(object):
+class TfidfPosts(object):
     '''
-    A class to cluster Missed Connections posts output various results
+    A class for outputting various Missed Connections results
     '''
-    def __init__(self, df, k=5):
+    def __init__(self, df):
         '''
         INPUT:
             - df (DataFrame): DataFrame of a MissedConn object (or structured similarly)
-            - k (int): number of cluster groups desired for k-means clustering
         '''
         self.df = df
-        self.k = k
-        self.posts = [str(unidecode(df['title'].values[i]) + ' ' + \
-            unidecode(df['post'].values[i])) for i in xrange(len(df))]
+        self.posts = [unidecode(df['title'].values[i]) + ' ' + \
+            unidecode(df['post'].values[i]) for i in xrange(len(df))]
         self.englishposts = [p for p in self.posts if detect(p) == 'en']
         self.vectorizer = TfidfVectorizer(stop_words='english')
         self.word_vecs = None
         self.words = None
-        self.km = KMeans(n_clusters=self.k)
 
     def fit(self):
         self.word_vecs = self.vectorizer.fit_transform(self.englishposts)
         self.words = self.vectorizer.get_feature_names()
-        self.km.fit(self.word_vecs)
 
     def find_posts(self, word):
         '''
         Returns an iterable of posts given a word to search for
         '''
-        word_ind = self.word_vecs.index(word)
-        match_inds = self.word_vecs[:, word_ind].argsort()
-        matches =
-
-    def print_clustered_words(self, n_words=10):
-        '''
-        Prints the top n_words (default=10) words that are associated with each cluster
-        '''
-        top_word_inds = self.km.cluster_centers_.argsort()[:, -n_words:]
-
-        for num, ind in enumerate(top_word_inds):
-            print 'Cluster {}: {}'.format(num, ', '.join(self.words[i] for i in ind))
-
-    def print_clustered_posts(self, n_posts=3):
-        '''
-        Prints n_posts (default=3) random posts from each cluster
-        '''
-        assigned_cluster = self.km.transform(self.word_vecs).argmin(axis=1)
-        for i in range(self.km.n_clusters):
-            cluster = np.arange(0, self.word_vecs.shape[0])[assigned_cluster==i]
-            sample_posts = np.random.choice(cluster, n_posts, replace=False)
-            print '\nCluster {}:'.format(i)
-            for p in sample_posts:
-                print '    {}\n------------------------'.format(self.posts[p])
+        word_ind = self.words.index(word)
+        word_col = self.word_vecs.getcol(word_ind).toarray().flatten()
+        match_inds = np.nonzero(word_col)[0]
+        ordered_match_inds = match_inds[np.argsort(word_col[match_inds])[::-1]]
+        return iter(np.array(self.englishposts)[ordered_match_inds])
 
     def print_most_cos_sim(self, thresh=0.675):
         '''
