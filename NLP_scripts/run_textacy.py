@@ -22,8 +22,6 @@ preprocessed = [textacy.preprocess.preprocess_text(t, fix_unicode=True,
     no_phone_numbers=True, no_numbers=True, no_currency_symbols=True,
     no_punct=True, no_contractions=True, no_accents=True) for t in texts]
 
-
-
 # Make corpus
 nlp = spacy.load('en')
 corpus = textacy.TextCorpus.from_texts(spacy.en.English(), iter(utexts))
