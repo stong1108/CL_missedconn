@@ -1,22 +1,21 @@
 import urllib2
 import pickle
 from collections import defaultdict
+from string import punctuation
 
-# Load data
-# with open('english_missedconn_0808.pickle', 'rb') as f:
-#     df = pickle.load(f)
+def load_bad_words():
+    with open('bad_words.pickle', 'rb') as f:
+        bad_words = pickle.load(f)
 
-with open('bad_words.pickle', 'rb') as f:
-    bad_words = pickle.load(f)
+    words_by_len = defaultdict(list)
+    for term in bad_words:
+        length = len(term.split())
+        words_by_len[length].append(term)
+    lengths = sorted(words_by_len.keys(), reverse=True)
+    return words_by_len, lengths
 
-words_by_len = defaultdict(list)
-for term in bad_words:
-    length = len(term.split())
-    words_by_len[length].append(term)
-lengths = sorted(words_by_len.keys(), reverse=True)
-
-def vulgar_score(post):
-    words = post.split()
+def vulgar_score(post, words_by_len, lengths):
+    words = [word.strip(punctuation) for word in post.split()]
     word_count = len(words)
     dirty = []
 
@@ -42,8 +41,27 @@ def vulgar_score(post):
                 words[ind:(ind+lngth)] = []
 
     vulgar_count = sum([len(term.split()) for term in dirty])
-
     return vulgar_count, word_count, dirty
+
+if __name__ == '__main__':
+
+    with open('english_missedconn.pickle', 'rb') as f:
+        df = pickle.load(f)
+
+    words_by_len, lengths = load_bad_words()
+    vulgar_counts = []
+    word_counts = []
+    dirties = []
+
+    for text in df['text']:
+        v, w, d = vulgar_score(text, words_by_len, lengths)
+        vulgar_counts.append(v)
+        word_counts.append(w)
+        dirties.append(d)
+
+    df['num_vulgar'] = vulgar_counts
+    df['num_words'] = word_counts
+    df['vulgar_terms'] = dirties
 
 #---------------------
 # Taking bad words from the internet and puttin them in a pickle!
