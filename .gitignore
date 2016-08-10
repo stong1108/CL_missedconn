@@ -8,3 +8,4 @@ ngrams.ipynb
 scrum-diary.md
 *.pickle
 sql_records/*
+GoogleNews-vectors-negative300.bin
