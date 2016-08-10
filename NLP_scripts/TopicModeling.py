@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from manage_db import db_to_df
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.grid_search import GridSearchCV
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.stem import PorterStemmer
 from sklearn.decomposition import NMF
@@ -35,7 +36,7 @@ class TopicModeling(object):
         df['text'] = map(lambda x,y: ' '.join([x, y]), df['title'], df['post'])
         eng_inds = [i for i in xrange(len(df)) if detect(df.loc[i, 'text']) == 'en']
 
-        with open(picklename) as f:
+        with open(picklename, 'wb') as f:
             pickle.dump(df[eng_inds], f)
 
     def _load_data(self):
@@ -114,7 +115,7 @@ class TopicModeling(object):
         mean_mses = []
         k_vals = np.arange(5, 20)
         for k in k_vals:
-            mses = cross_val(n_folds=n_folds, n_comp=k)
+            mses = self.cross_val(n_folds=n_folds, n_comp=k)
             all_mses.append(mses)
             mean_mses.append(np.mean(mses))
         plt.plot(k_vals, mean_mses, label=key)
@@ -171,9 +172,9 @@ if __name__ == '__main__':
     for key in tm.groupdict.iterkeys():
         tm.texts = [tm.stemmatize_doc(t) for t in tm.groupdict[key]]
         tm.vectorize()
-        tm.explore_corpus_sizes(key)
-        #tm.explore_k_cross_val(key)
+        # tm.explore_corpus_sizes(key) # w4w too small (274)
+        tm.explore_k_cross_val(key)
         #tm.explore_alpha(key, l1_ratio=0)
         #tm.explore_alpha(key, l1_ratio=1)
-        plt.legend()
-        plt.show()
+    plt.legend()
+    plt.show()

@@ -4,6 +4,7 @@
 *.bak
 *.swp
 dickingaround.ipynb
+ngrams.ipynb
 scrum-diary.md
 *.pickle
 sql_records/*
