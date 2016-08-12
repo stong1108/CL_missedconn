@@ -1,16 +1,13 @@
 import pickle
 import numpy as np
 import pandas as pd
-from manage_db import db_to_df
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.grid_search import GridSearchCV
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.stem import PorterStemmer
 from sklearn.decomposition import NMF
 import matplotlib.pyplot as plt
 import seaborn as sns
 from unidecode import unidecode
-from langdetect import detect
 
 class TopicModeling(object):
 
@@ -25,22 +22,8 @@ class TopicModeling(object):
         self.shuffled_X = None
         self.groupdict = None
 
-    def _make_english_pickle(self, picklename):
-        with open('bestofmc.pickle', 'rb') as f:
-            df_best = pickle.load(f)
-
-        df_all = db_to_df()
-
-        df = df_all.append(df_best)
-        df.reset_index(inplace=True)
-        df['text'] = map(lambda x,y: ' '.join([x, y]), df['title'], df['post'])
-        eng_inds = [i for i in xrange(len(df)) if detect(df.loc[i, 'text']) == 'en']
-
-        with open(picklename, 'wb') as f:
-            pickle.dump(df[eng_inds], f)
-
-    def _load_data(self):
-        with open('english_missedconn.pickle') as f:
+    def _load_data(self, picklename="english_missedconn_0808.pickle"):
+        with open(picklename) as f:
             df = pickle.load(f)
         return df
 
@@ -73,9 +56,9 @@ class TopicModeling(object):
 
     def vectorize(self, bag_of_words=False):
         if bag_of_words:
-            self.vectorizer = CountVectorizer(stop_words='english', max_features=5000, ngram_range=(1, 4))
+            self.vectorizer = CountVectorizer(stop_words='english', max_features=5000, ngram_range=(1, 3))
         else:
-            self.vectorizer = TfidfVectorizer(stop_words='english', max_features=5000, ngram_range=(1, 4))
+            self.vectorizer = TfidfVectorizer(stop_words='english', max_features=5000, ngram_range=(1, 3))
         self.X = self.vectorizer.fit_transform(self.texts)
         self.vocab = self.vectorizer.get_feature_names()
 
@@ -145,9 +128,9 @@ class TopicModeling(object):
         plt.xlabel('l1_ratio')
         plt.ylabel('MSE')
 
-    def print_nmf_words(self, corp=3000, n_comp=10, l1_ratio=1, alpha=0):
-        X_ = self.shuffled_X[:corp]
-        mdl = NMF(n_components=n_comp, l1_ratio=l1_ratio, alpha=alpha)
+    def print_nmf_words(self, n_comp=15):
+        X_ = self.shuffled_X
+        mdl = NMF(n_components=n_comp)
         W = mdl.fit_transform(X_)
         H = mdl.components_
         top_word_inds = np.argsort(H)[:, -10:]
@@ -172,9 +155,10 @@ if __name__ == '__main__':
     for key in tm.groupdict.iterkeys():
         tm.texts = [tm.stemmatize_doc(t) for t in tm.groupdict[key]]
         tm.vectorize()
+        print key
+        tm.print_nmf_words(n_comp=15)
+        print '\n--------------------------------\n'
         # tm.explore_corpus_sizes(key) # w4w too small (274)
-        tm.explore_k_cross_val(key)
-        #tm.explore_alpha(key, l1_ratio=0)
-        #tm.explore_alpha(key, l1_ratio=1)
-    plt.legend()
-    plt.show()
+        # tm.explore_k_cross_val(key)
+        # tm.explore_alpha(key, l1_ratio=0)
+        # tm.explore_alpha(key, l1_ratio=1)
