@@ -1,6 +1,7 @@
 from pandas.io.sql import read_sql
 from sqlalchemy import create_engine
 from langdetect import detect
+import pickle
 
 def create_db():
     '''
@@ -159,7 +160,7 @@ def db_to_df():
     conn.close()
     return df
 
-def _make_english_pickle(picklename):
+def make_english_pickle(picklename):
     '''
     Creates a pickle object containing English posts only
     '''
@@ -174,4 +175,4 @@ def _make_english_pickle(picklename):
     eng_inds = [i for i in xrange(len(df)) if detect(df.loc[i, 'text']) == 'en']
 
     with open(picklename, 'wb') as f:
-        pickle.dump(df[eng_inds], f)
+        pickle.dump(df.loc[eng_inds], f)
