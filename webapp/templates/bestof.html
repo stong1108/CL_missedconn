@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block body %}
+
+<p align=left><h2>{{ mc_title }}</h2></p>
+<br>
+<p align=left>{{ mc_post }}</p>
+<br>
+<form action="" method="post" name="question">
+  <div class="row">
+
+    <div class="col-md-4">
+      <p><input class="btn btn-default" type="submit" name="btn" value="Next"></p>
+      <br>
+      <p><a class="btn btn-default" href="/" role="button">Quit</a></p>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

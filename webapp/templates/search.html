@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block body %}
+
+<h1>Missed Connection Search</h1>
+
+<form action="" method="post" name="search">
+  {{ form.hidden_tag() }}
+  <p>
+    Find posts about:<br><br>
+    {{ form.word(size=10) }}<br>
+    {% for error in form.search %}
+      <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}<br>
+
+  <p><input type="submit" value="Search!"></p>
+</form>
+
+{% endblock %}
