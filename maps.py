@@ -2,6 +2,7 @@ import pandas as pd
 import folium
 from folium.plugins import HeatMap
 import numpy as np
+from unidecode import unidecode
 
 def make_pinned_map(df, links=False, zoom=12):
     '''
@@ -30,7 +31,7 @@ def make_pinned_map(df, links=False, zoom=12):
             popup = folium.Popup(iframe, max_width=400)
         else:
             try:
-                popup = df_latlongs.loc[ind, 'title']+':\n\n\t'+df_latlongs.loc[ind, 'post'].decode('utf-8')
+                popup = unidecode(df_latlongs.loc[ind, 'title'])+':\n\n\t'+unidecode(df_latlongs.loc[ind, 'post'])
             except UnicodeDecodeError:
                 print 'UnicodeDecodeError: ', df_latlongs.loc[ind, 'url']
                 continue
