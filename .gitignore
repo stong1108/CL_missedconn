@@ -10,3 +10,6 @@ scrum-diary.md
 sql_records/*
 GoogleNews-vectors-negative300.bin
 venv/*
+lda2vec_model.py
+NLP_scripts/run_textacy.py
+mapmaking.ipynb
