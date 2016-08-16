@@ -40,7 +40,13 @@ class TfidfPosts(object):
         '''
         Prints the two posts that have the highest cosine similarity
         '''
-        cos_sims = linear_kernel(self.word_vecs, self.word_vecs)
+        # normalize self.word_vecs
+        normalized = np.empty_like(self.word_vecs)
+        for i, vec in enumerate(self.word_vecs):
+            for j, val in enumerate(vec):
+                normalized[i, j] = val / np.linalg.norm(vec)
+
+        cos_sims = linear_kernel(normalized, normalized)
 
         # Initialize max_sim = 0, only consider cos sims under threshold
         # so we know we're not recording a post compared with itself (1.0)

@@ -2,6 +2,7 @@ import pickle
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.stem import PorterStemmer
 from sklearn.decomposition import NMF
@@ -22,12 +23,12 @@ class TopicModeling(object):
         self.shuffled_X = None
         self.groupdict = None
 
-    def _load_data(self, picklename="english_missedconn_0808.pickle"):
+    def _load_data(self, picklename="english_missedconn_0812.pickle"):
         with open(picklename) as f:
             df = pickle.load(f)
         return df
 
-    def _make_texts(self):
+    def make_texts(self):
         self.utexts = list(self.df['text'].values)
         self.texts = [unidecode(t) for t in self.utexts]
         self.stemmedtexts = [self.stemmatize_doc(t) for t in self.utexts]
@@ -106,27 +107,15 @@ class TopicModeling(object):
         plt.ylabel('Mean MSE across {} folds'.format(n_folds))
         # plt.show()
 
-    def explore_alpha(self, key, l1_ratio=1):
-        alphas = np.linspace(0.01, 1, 100)
-        mses = []
-        for a in alphas:
-            X_ = self.X
-            mdl = NMF(n_components=5, l1_ratio=l1_ratio, alpha=a)
-            mses.append(self._calc_mse(mdl, X_))
-        plt.plot(alphas, mses, label=key)
-        plt.xlabel('alpha')
-        plt.ylabel('MSE')
+    def calc_cos_sims(self):
+        normalized = np.empty_like(self.X)
+        for i, vec in enumerate(self.X):
+            norm = np.linalg.norm(vec)
+            for j, val in enumerate(vec):
+                normalized[i, j] = val/norm
 
-    def explore_l1_ratio(self, key, alpha = 0.5):
-        ratios = np.linspace(0.01, 1, 100)
-        mses = []
-        for a in alphas:
-            X_ = self.X
-            mdl = NMF(n_components=5, l1_ratio=l1_ratio, alpha=a)
-            mses.append(self._calc_mse(mdl, X_))
-        plt.plot(alphas, mses, label=key)
-        plt.xlabel('l1_ratio')
-        plt.ylabel('MSE')
+        sims = linear_kernel(normalized, normalized)
+        return sims
 
     def print_nmf_words(self, n_comp=15):
         X_ = self.shuffled_X
@@ -151,6 +140,7 @@ class TopicModeling(object):
 
 if __name__ == '__main__':
     tm = TopicModeling()
+    tm.make_texts()
     tm.make_groups('category')
     for key in tm.groupdict.iterkeys():
         tm.texts = [tm.stemmatize_doc(t) for t in tm.groupdict[key]]
@@ -159,6 +149,3 @@ if __name__ == '__main__':
         tm.print_nmf_words(n_comp=15)
         print '\n--------------------------------\n'
         # tm.explore_corpus_sizes(key) # w4w too small (274)
-        # tm.explore_k_cross_val(key)
-        # tm.explore_alpha(key, l1_ratio=0)
-        # tm.explore_alpha(key, l1_ratio=1)
