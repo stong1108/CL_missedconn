@@ -2,7 +2,7 @@ import pickle
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.metrics.pairwise import linear_kernel
+from sklearn.metrics.pairwise import linear_kernel, cosine_similarity
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.stem import PorterStemmer
 from sklearn.decomposition import NMF
@@ -83,7 +83,7 @@ class TopicModeling(object):
         plt.plot(corpus_sizes, mses, label=key)
         plt.xlabel('Corpus size')
         plt.ylabel('MSE')
-        # plt.show()
+        plt.show()
 
     def cross_val(self, n_folds=7, n_comp=5):
         size = self.shuffled_X.shape[0]/n_folds
@@ -97,7 +97,8 @@ class TopicModeling(object):
     def explore_k_cross_val(self, key, n_folds=7):
         all_mses = []
         mean_mses = []
-        k_vals = np.arange(5, 20)
+        k_vals = np.arange(5, 25)
+        # k_vals = [5, 10, 50, 100]
         for k in k_vals:
             mses = self.cross_val(n_folds=n_folds, n_comp=k)
             all_mses.append(mses)
@@ -105,7 +106,7 @@ class TopicModeling(object):
         plt.plot(k_vals, mean_mses, label=key)
         plt.xlabel('Number of topics')
         plt.ylabel('Mean MSE across {} folds'.format(n_folds))
-        # plt.show()
+        plt.show()
 
     def calc_cos_sims(self):
         normalized = np.empty_like(self.X)
@@ -117,6 +118,26 @@ class TopicModeling(object):
         sims = linear_kernel(normalized, normalized)
         return sims
 
+    def calc_group_sims(self, cutoff=100):
+        key_inds = []
+        for i, key in enumerate(self.groupdict.iterkeys()):
+            if len(self.groupdict[key]) > cutoff:
+                key_inds.append(i)
+        cities = [self.groupdict.keys()[ind] for ind in key_inds]
+
+        city_mat = np.zeros((len(cities), self.X.shape[1]))
+        for j, city in enumerate(cities):
+            city_inds = self.df[self.df['city']==city].index
+            city_mat[j] = np.mean(self.X[city_inds], axis=0)
+
+        sims = cosine_similarity(city_mat, city_mat)
+        plt.figure(figsize=(14,12))
+        sns.heatmap(sims, xticklabels=cities, yticklabels=cities, annot=True)
+        plt.xticks(rotation=90)
+        plt.yticks(rotation=0)
+        plt.tight_layout()
+        plt.show()
+
     def print_nmf_words(self, n_comp=15):
         X_ = self.shuffled_X
         mdl = NMF(n_components=n_comp)
@@ -124,7 +145,7 @@ class TopicModeling(object):
         H = mdl.components_
         top_word_inds = np.argsort(H)[:, -10:]
         for ind, row in enumerate(top_word_inds):
-            print 'Component {}: {}'.format(ind, ', '.join([feature_words[i] for i in row]))
+            print 'Topic {}: {}'.format(ind, ', '.join([feature_words[i] for i in row]))
 
     def explore_topics(self, key, corp=3000):
         mses = []
@@ -134,9 +155,9 @@ class TopicModeling(object):
             mdl = NMF(n_components=n)
             mses.append(self._calc_mse(mdl, X_))
         plt.plot(components, mses, label='key')
-        plt.xlabel('Number of components')
+        plt.xlabel('Number of topics')
         plt.ylabel('MSE')
-        # plt.show()
+        plt.show()
 
 if __name__ == '__main__':
     tm = TopicModeling()
@@ -148,4 +169,3 @@ if __name__ == '__main__':
         print key
         tm.print_nmf_words(n_comp=15)
         print '\n--------------------------------\n'
-        # tm.explore_corpus_sizes(key) # w4w too small (274)
