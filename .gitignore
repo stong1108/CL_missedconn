@@ -13,3 +13,4 @@ venv/*
 lda2vec_model.py
 NLP_scripts/run_textacy.py
 mapmaking.ipynb
+images/*
