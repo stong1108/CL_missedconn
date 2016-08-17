@@ -83,10 +83,6 @@ Scraped fields include:
 |`raw_page`|str|string of raw html of Missed Connection (unaltered data)|
 |`has_pic`|int|1 if Missed Connection contained a picture, 0 if no picture|
 ***
-Example `df` attribute of MissedConn object:
+Example:
 
 ![Example Craigslist page](./images/ex_cl_page.png)
-
-|url|title|category|post_dt|latitude|longitude|neighborhood|extra|age|post|record_dt|city|raw_page|has_pic|
-|:--|:--|:-:|:-:|:-:|:-:|:--|:--|:-:|:--|:-:|:-:|:-|:-:|
-|https://sfbay.craigslist.org/eby/mis/5673733926.html |WOW!! Delicious woman at Safeway!|m4w|2016-07-08 15:23:00|37.8528|-122.023|Alamo Safeway| |-1|You were coming down the aisle, I moved my car...|2016-07-11 18:04:24|sfbay|(html stuff)|0|
