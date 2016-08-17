@@ -75,4 +75,4 @@ def result(word, page):
         item=item, num=num, pagination=pagination, title='Results', css_framework='foundation')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8000)
