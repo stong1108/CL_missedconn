@@ -7,6 +7,9 @@ Contains files for content analysis of Missed Connections (see its [README](http
 **webapp**<br>
 Contains files for the Missed Connections Explorer web app.
 
+**saved_maps**<br>
+Contains html files for interactive maps.
+
 **MissedConn.py**<br>
 Class file for a Missed Connections scraper object.
 
