@@ -2,7 +2,7 @@
 
 ### Contents
 **NLP_scripts**<br>
-Contains files for content analysis of Missed Connections (see its README for more info).
+Contains files for content analysis of Missed Connections (see its [README](https://github.com/stong1108/CL_missedconn/tree/master/NLP_scripts) for more info).
 
 **webapp**<br>
 Contains files for the Missed Connections Explorer web app.
@@ -89,4 +89,4 @@ Example `df` attribute of MissedConn object:
 
 |url|title|category|post_dt|latitude|longitude|neighborhood|extra|age|post|record_dt|city|raw_page|has_pic|
 |:--|:--|:-:|:-:|:-:|:-:|:--|:--|:-:|:--|:-:|:-:|:-|:-:|
-|https://sfbay.craigslist.org/eby/mis/5673733926.html |WOW!! Delicious woman at Safeway!|m4w|2016-07-08 15:23:00|37.8528|-122.023|Alamo Safeway| |-1|You were coming down the aisle, I moved my car...|2016-07-11 18:04:24|sfbay|<html stuff>|0|
+|https://sfbay.craigslist.org/eby/mis/5673733926.html |WOW!! Delicious woman at Safeway!|m4w|2016-07-08 15:23:00|37.8528|-122.023|Alamo Safeway| |-1|You were coming down the aisle, I moved my car...|2016-07-11 18:04:24|sfbay|(html stuff)|0|
