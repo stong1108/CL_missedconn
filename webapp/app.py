@@ -72,7 +72,7 @@ def result(word, page):
     item = items[ind]
 
     return render_template('result.html', keys=word, page=page, word=word,
-        item=item, num=num, pagination=pagination, title='Results')
+        item=item, num=num, pagination=pagination, title='Results', css_framework='foundation')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
