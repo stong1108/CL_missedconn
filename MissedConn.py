@@ -26,7 +26,6 @@ class MissedConn(object):
                     'record_dt', 'city', 'raw_page', 'has_pic'])
         self._baseurl = self.starturl[:self.starturl.find('/search')]
         self._hrefs = []
-        self._nhoods = None
 
     def get_df(self, update=False):
         '''
@@ -47,13 +46,6 @@ class MissedConn(object):
             self.df = pd.DataFrame(columns=['title', 'category', 'post_dt', 'latitude',
                         'longitude', 'neighborhood', 'extra', 'age', 'post', 'url',
                         'record_dt', 'city', 'raw_page', 'has_pic'])
-
-        # Fix neighborhood stuff later...
-        # -------------
-        #Get neighborhoods
-        # nh_content = soup.findAll('input', {'class': 'multi_checkbox multi_nh'})
-        # self._nhoods = set(str(nh.text.strip()) for nh in nh_content)
-        # -------------
 
         # Get post links (and 'next' link if it exists)
         self._hrefs.extend(self._get_hrefs(soup))

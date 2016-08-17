@@ -58,13 +58,13 @@ def vectorize(finaltexts):
     # Make bag of words (use Count w/ english_missedconn_0808 and 10000 max_features)
     vectorizer = CountVectorizer(stop_words='english', tokenizer=mytokenize, max_features=10000, ngram_range=(1, 3))
 
-    # Find trending bi-grams
-    # vectorizer = CountVectorizer(stop_words='english', tokenizer=mytokenize, max_features=10000, ngram_range=2)
     X = vectorizer.fit_transform(finaltexts)
     feature_words = vectorizer.get_feature_names()
     return vectorizer, X, feature_words
 
 def groupbyweek(df):
+    # Find trending bi-grams
+    # vectorizer = CountVectorizer(stop_words='english', tokenizer=mytokenize, max_features=10000, ngram_range=2)
     pass
 
 #--------------------------------
@@ -137,10 +137,6 @@ def plot_hair(hair_inds, cat_d):
         'blue/green': [23, 46], 'brunette': [24, 25, 26], 'curly': [31, 32, 81],
         'facial': [0, 2, 41, 42, 62], 'gray': [45, 47, 63, 68, 76],
         'long': [57, 58, 59, 60, 61], 'short': [70, 72, 73, 74], 'red': [66, 67]}
-    # hair_dict={'blonde': [5, 6], 'brunette':[20, 21, 22, 32], 'red':[58, 59],
-    #     'black':[33, 34], 'blue/green':[19, 41], 'curly':[27, 28, 73],
-    #     'short':[62, 63, 64, 65, 66], 'long':[50, 52, 53, 54], 'facial':[37],
-    #     'gray':[40, 42, 55, 68]}
 
     make_plot(hair_dict, hair_inds, 'Hair', cat_d)
 

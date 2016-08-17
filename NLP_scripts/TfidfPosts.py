@@ -7,7 +7,7 @@ from langdetect import detect
 
 class TfidfPosts(object):
     '''
-    A class for outputting various Missed Connections results
+    A class for outputting various results from TF-IDF doc-term construction
     '''
     def __init__(self, df):
         '''
@@ -23,6 +23,9 @@ class TfidfPosts(object):
         self.words = None
 
     def fit(self):
+        '''
+        Constructs the doc-term matrix and corpus vocabulary
+        '''
         self.word_vecs = self.vectorizer.fit_transform(self.englishposts)
         self.words = self.vectorizer.get_feature_names()
 

@@ -6,9 +6,9 @@ from unidecode import unidecode
 import numpy as np
 from langdetect import detect
 
-class MissedConnPosts(object):
+class kMeansPosts(object):
     '''
-    A class to cluster Missed Connections posts output various results
+    A class to cluster posts and output various results
     '''
     def __init__(self, df, k=5):
         '''
@@ -26,10 +26,12 @@ class MissedConnPosts(object):
         self.km = KMeans(n_clusters=self.k)
 
     def fit(self):
+        '''
+        Constructs the doc-term matrix and corpus vocabulary
+        '''
         self.word_vecs = self.vectorizer.fit_transform(self.englishposts)
         self.words = self.vectorizer.get_feature_names()
         self.km.fit(self.word_vecs)
-
 
     def print_clustered_words(self, n_words=10):
         '''
