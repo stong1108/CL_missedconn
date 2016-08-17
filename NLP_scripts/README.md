@@ -5,7 +5,7 @@
 **TopicModeling.py**<br>
 Main script for topic modeling using NMF
 
-**words.py**<br>
+**vulgar_words.py**<br>
 Script for exploring vulgarity of posts by age or category.
 Vulgarity is determined by matching of terms in these compiled dirty (NSFW) words:
 
