@@ -3,6 +3,7 @@ import folium
 from folium.plugins import HeatMap
 import numpy as np
 from unidecode import unidecode
+from geopy.geocoders import Nominatim
 
 def make_pinned_map(df, links=False, zoom=12):
     '''
@@ -18,7 +19,8 @@ def make_pinned_map(df, links=False, zoom=12):
         higher magnification). Folium Map object supports mouse zoom & pan during
         viewing as well.
     '''
-    df_latlongs, view_coords = _make_latlong_info(df)
+    df_temp = df.copy()
+    df_latlongs, view_coords = _make_latlong_info(df_temp)
 
     # Initialize map
     m = folium.Map(location=view_coords, zoom_start=zoom, tiles='Cartodb Positron')
@@ -61,7 +63,46 @@ def make_heat_map(df, zoom=9):
 
     return m
 
-def _make_latlong_info(df):
+def _make_latlong_info(df, calc_view=False):
+    df = _fix_cities(df)
     df_latlongs = df[~df['latitude'].isnull()]
-    view_coords = tuple(map(np.median, zip(*df_latlongs[['latitude', 'longitude']].values)))
+    if calc_view:
+        view_coords = tuple(map(np.median, zip(*df_latlongs[['latitude', 'longitude']].values)))
+    else:
+        geolocator = Nominatim()
+        coords = geolocator.geocode(str(df['city'].unique()[0]))
+        view_coords = coords.latitude, coords.longitude
     return df_latlongs, view_coords
+
+def _fix_cities(df):
+    city_dict = {
+        'fortcollins': 'fort collins',
+        'colosprings': 'colorado springs',
+        'tampabay': 'tampa bay',
+        'iowacity': 'iowa city',
+        'kansascity': 'kansas city',
+        'neworleans': 'new orleans',
+        'washingtondc': 'dc',
+        'annarbor': 'ann arbor',
+        'grandrapids': 'grand rapids',
+        'detroitmetro': 'detroit',
+        'newyork': 'new york',
+        'northjersey': 'north jersey',
+        'sfbay': 'sf',
+        'oklahomacity': 'oklahoma city',
+        'rhodeisland': 'rhode island',
+        'sandiego': 'san diego',
+        'losangeles': 'los angeles',
+        'orangeco': 'orange co',
+        'orangecounty': 'orange co',
+        'santabarbara': 'santa barbara',
+        'sanantonio': 'san antonio',
+        'saltlake': 'salt lake city',
+        'washington': 'dc',
+        'eauclaire': 'eau claire',
+        'greenbay': 'green bay'}
+
+    for i, city in enumerate(df['city']):
+        if city in city_dict.keys():
+            df.loc[i, 'city'] = city_dict[city]
+    return df

@@ -16,9 +16,16 @@
     text-decoration: none;
 }
 #mybody { width: 100%; height:100%;}
-#myFrame { width:100%; height:100%;}
+#ifrm { width:100%; height:100%;}
 #map-canvas {height: 500px;}
 </style>
+
+<script>
+  function get_map(loc, name) {
+    document.getElementById('ifrm').src = loc;
+    document.getElementById('cityname').innerHTML = name;
+  }
+</script>
 
 <title>Maps</title>
 
@@ -26,7 +33,7 @@
 
 <div class="row">
   <div class="col-md-2"></div>
-  <div class="col-md-10"><h3>San Francisco</h3></div>
+  <div class="col-md-10"><h3 name="cityname" id="cityname">San Francisco</h3></div>
 </div>
 
 <div class="row">
@@ -34,76 +41,35 @@
   <nav id="mynav">
     <br>
   <ul>
-    <li><a href="#">Atlanta, GA</a></li>
-    <li><a href="#">Austin, TX</a></li>
-    <li><a href="#">Boston, MA</a></li>
-    <li><a href="#">Chicago, IL</a></li>
-    <li><a href="#">Dallas, TX</a></li>
-    <li><a href="#">Denver, CO</a></li>
-    <li><a href="#">Houston, TX</a></li>
-    <li><a href="#">Las Vegas, NV</a></li>
-    <li><a href="#">Miami, FL</a></li>
-    <li><a href="#">Minneapolis, MN</a></li>
-    <li><a href="#">New York, NY</a></li>
-    <li><a href="#">Orange County, CA</a></li>
-    <li><a href="#">Philadelphia, PA</a></li>
-    <li><a href="#">Phoenix, AZ</a></li>
-    <li><a href="#">Portland, OR</a></li>
-    <li><a href="#">Raleigh, NC</a></li>
-    <li><a href="#">Sacramento, CA</a></li>
-    <li><a href="#">San Diego, CA</a></li>
-    <li><a href="#">Seattle, WA</a></li>
-    <li><a href="#">San Francisco, CA</a></li>
-    <li><a href="#">Washington, DC</a></li>
+    <li><a href="#" onclick="get_map('/static/images/atlanta.html', 'Atlanta, GA')">Atlanta, GA</a></li>
+    <li><a href="#" onclick="get_map('/static/images/austin.html', 'Austin, TX')">Austin, TX</a></li>
+    <li><a href="#" onclick="get_map('/static/images/boston.html', 'Boston, MA')">Boston, MA</a></li>
+    <li><a href="#" onclick="get_map('/static/images/chicago.html', 'Chicago, IL')">Chicago, IL</a></li>
+    <li><a href="#" onclick="get_map('/static/images/dallas.html', 'Dallas, TX')">Dallas, TX</a></li>
+    <li><a href="#" onclick="get_map('/static/images/denver.html', 'Denver, CO')">Denver, CO</a></li>
+    <li><a href="#" onclick="get_map('/static/images/houston.html', 'Houston, TX')">Houston, TX</a></li>
+    <li><a href="#" onclick="get_map('/static/images/lasvegas.html', 'Las Vegas, NV')">Las Vegas, NV</a></li>
+    <li><a href="#" onclick="get_map('/static/images/losangeles.html', 'Los Angeles, CA')">Los Angeles, CA</a></li>
+    <li><a href="#" onclick="get_map('/static/images/miami.html', 'Miami, FL')">Miami, FL</a></li>
+    <li><a href="#" onclick="get_map('/static/images/minneapolis.html', Minneapolis, MN')">Minneapolis, MN</a></li>
+    <li><a href="#" onclick="get_map('/static/images/newyork.html', 'New York, NY')">New York, NY</a></li>
+    <li><a href="#" onclick="get_map('/static/images/orangecounty.html', 'Orange County, CA')">Orange County, CA</a></li>
+    <li><a href="#" onclick="get_map('/static/images/philadelphia.html', 'Philadelphia, PA')">Philadelphia, PA</a></li>
+    <li><a href="#" onclick="get_map('/static/images/phoenix.html', 'Phoenix, AZ')">Phoenix, AZ</a></li>
+    <li><a href="#" onclick="get_map('/static/images/portland.html', 'Portland, OR')">Portland, OR</a></li>
+    <li><a href="#" onclick="get_map('/static/images/raleigh.html', 'Raleigh, NC')">Raleigh, NC</a></li>
+    <li><a href="#" onclick="get_map('/static/images/sacramento.html', 'Sacramento, CA')">Sacramento, CA</a></li>
+    <li><a href="#" onclick="get_map('/static/images/sandiego.html', 'San Diego, CA')">San Diego, CA</a></li>
+    <li><a href="#" onclick="get_map('/static/images/seattle.html', 'Seattle, WA')">Seattle, WA</a></li>
+    <li><a href="#" onclick="get_map('/static/images/sfbay.html', 'San Francisco, CA')">San Francisco, CA</a></li>
+    <li><a href="#" onclick="get_map('/static/images/washingtondc.html', 'Washington, DC')">Washington, DC</a></li>
   </ul>
 </nav>
 </div>
 
 <div class="col-md-10" id="map-canvas">
-  <iframe src="/static/images/sfc_pinned_map.html" id="myFrame"/>
+  <iframe name="ifrm" src="/static/images/sfbay.html" id="ifrm"/>
 </div>
 </div>
 </body>
 {% endblock %}
-
-<div class="options-table">
-  <form>
-    <div class="switch">
-      <a href="#" id="choice-1">Seattle, WA</a>
-      <label for="choice-1"></label>
-    </div>
-    <!-- <div class="switch">
-      <span>Designer Package</span>
-      <input id="choice-2" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" data-price="150">
-      <label for="choice-2"></label>
-      <div class="clearfix"></div>
-    </div>
-    <div class="switch">
-      <span>Developer Package</span>
-      <input id="choice-3" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" data-price="50">
-      <label for="choice-3"></label>
-      <div class="clearfix"></div>
-    </div> -->
-  </form>
-</div>
-
-<div class="map-display">
-  <ul>
-    <li class="city"><span>San Francisco</span></li>
-    <iframe class="choice-1" src="/static/images/sfc_pinned_map.html" id="myFrame"/>
-    <iframe class="choice-2" src="/static/images/sfc_pinned_map.html" id="myFrame"/>
-    <li class="choice-2"><i>+</i>Drag and Drop Designer</li>
-    <li class="choice-2"><i>+</i>5 Ready Made Templates</li>
-    <li class="choice-3"><i>+</i>Advanced Statistics</li>
-    <li class="choice-3"><i>+</i>Custom CSS Options</li>
-    <li><i>+</i>Basic Statistics</li>
-  </ul>
-</div>
-
-$(document).ready(function () {
-  $("choice-1").click(function() {
-    $("iframe").attr("src", "/static/images/sfc_pinned_map.html")
-
-
-  });
-});
