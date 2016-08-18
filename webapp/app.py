@@ -45,9 +45,14 @@ def index():
 def about():
     return render_template('about.html', title="About")
 
+@app.route('/error', methods=['GET', 'POST'])
+@app.route('/error/<word>', methods=['GET', 'POST'])
+def error(word):
+    return render_template('error.html', word=word)
+
 @app.route('/maps', methods=['GET', 'POST'])
 def maps():
-    return render_template('sfc_pinned_map.html', title='Maps')
+    return render_template('map_cities.html', title='Maps')
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
@@ -60,10 +65,11 @@ def search():
 @app.route('/result/<word>/<int:page>', methods=['GET', 'POST'])
 def result(word, page):
     # get matches
-    ordered_match_inds = find_posts(word)
-    num = ordered_match_inds.shape[0]
-    if num <1:
-        abort(404)
+    try:
+        ordered_match_inds = find_posts(word)
+        num = ordered_match_inds.shape[0]
+    except ValueError:
+        return redirect(url_for('error', word=word))
 
     pagination = Pagination(page=page, per_page=1, total=num, record_name='post')
     missed_conn = df.iloc[ordered_match_inds]

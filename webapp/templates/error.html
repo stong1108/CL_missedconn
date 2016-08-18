@@ -1,0 +1,16 @@
+{% extends "base_result.html" %}
+{% block body %}
+
+<title>Error</title>
+
+<h1>Missed Connection Search</h1>
+
+<p><i>You searched for: <b>{{ word }}</b></i></p>
+<br>
+
+<img src="/static/images/clippy.png" alt="Clippy error" height="191" width="235">
+<br>
+<br>
+<p><a class="btn btn-default" href='/search' role="button">Try again</a></p>
+
+{% endblock %}

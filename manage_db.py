@@ -172,7 +172,13 @@ def make_english_pickle(picklename):
     df = df_all.append(df_best)
     df.reset_index(inplace=True)
     df['text'] = map(lambda x,y: ' '.join([x, y]), df['title'], df['post'])
-    eng_inds = [i for i in xrange(len(df)) if detect(df.loc[i, 'text']) == 'en']
-
+    eng_inds = []
+    for i in xrange(len(df)):
+        try:
+            if detect(df.loc[i, 'text']) == 'en':
+                eng_inds.append(i)
+        except:
+            continue
+            
     with open(picklename, 'wb') as f:
         pickle.dump(df.loc[eng_inds], f)
