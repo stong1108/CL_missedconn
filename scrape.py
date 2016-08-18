@@ -14,7 +14,7 @@ def scrape_update(city):
 
 cities = ['atlanta', 'austin', 'boston', 'chicago', 'dallas', 'denver', 'houston',
 'lasvegas', 'losangeles', 'miami', 'minneapolis', 'newyork', 'orangecounty',
-'philadelphia', 'phoenix', 'porland', 'raleigh', 'sacramento', 'sandiego',
+'philadelphia', 'phoenix', 'portland', 'raleigh', 'sacramento', 'sandiego',
 'seattle', 'sfbay', 'washingtondc']
 
 for city in cities:
