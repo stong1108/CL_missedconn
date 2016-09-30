@@ -1,11 +1,12 @@
 
 ## Setting up on AWS EC2 Instance (Ubuntu 14.04)
 
+### Install Anaconda
 ```
 wget https://repo.continuum.io/archive/Anaconda2-4.2.0-Linux-x86_64.sh
 ```
 
-run `bash` on Anaconda package
+Run `bash` on Anaconda package.
 
 ### Install Postgres
 Link to instructions:
@@ -25,7 +26,7 @@ Use `quit` to get back to `ubuntu` user and check for access with `psql`.
 ```
 sudo apt-get install git
 git clone https://github.com/stong1108/cl_missedconn
-git clone https://github.com/loganzkatz/vimconfig
+git clone https://github.com/stong1108/vimconfig
 cd vimconfig
 bash install.sh
 ```
