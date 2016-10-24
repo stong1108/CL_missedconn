@@ -20,6 +20,16 @@ createdb ubuntu
 createdb cl_missedconn
 ```
 
+Change engine address in `manage_db.py`:
+Use vim command `:%s/old/new/g` to replace `stong@localhost:5432` (old) with nothing (new), so what used to be
+```
+postgresql://stong@localhost:5432/cl_missedconn
+```
+now becomes
+```
+postgresql:///cl_missedconn
+```
+
 Use `quit` to get back to `ubuntu` user and check for access with `psql`.
 
 ### Grab things from Github
