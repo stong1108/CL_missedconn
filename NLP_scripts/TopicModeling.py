@@ -23,7 +23,7 @@ class TopicModeling(object):
         self.shuffled_X = None
         self.groupdict = None
 
-    def _load_data(self, picklename="bestofmc.pickle"):
+    def _load_data(self, picklename="english_missedconn_0812.pickle"):
         with open(picklename) as f:
             df = pickle.load(f)
         return df
@@ -139,7 +139,7 @@ class TopicModeling(object):
         plt.show()
 
     def print_nmf_words(self, n_comp=15):
-        X_ = self.shuffled_X
+        X_ = self.X
         mdl = NMF(n_components=n_comp)
         W = mdl.fit_transform(X_)
         H = mdl.components_
