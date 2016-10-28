@@ -23,7 +23,7 @@ class TopicModeling(object):
         self.shuffled_X = None
         self.groupdict = None
 
-    def _load_data(self, picklename="english_missedconn_0812.pickle"):
+    def _load_data(self, picklename="bestofmc.pickle"):
         with open(picklename) as f:
             df = pickle.load(f)
         return df
@@ -145,7 +145,7 @@ class TopicModeling(object):
         H = mdl.components_
         top_word_inds = np.argsort(H)[:, -10:]
         for ind, row in enumerate(top_word_inds):
-            print 'Topic {}: {}'.format(ind, ', '.join([feature_words[i] for i in row]))
+            print 'Topic {}: {}'.format(ind, ', '.join([self.vocab[i] for i in row]))
 
     def explore_topics(self, key, corp=3000):
         mses = []
