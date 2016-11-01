@@ -1,5 +1,8 @@
 # Craigslist Missed Connections
 
+**Write-up of the Content Analysis project lives here:**
+http://http://taketwodatablog.com/craigslists-missed-connections/
+
 ### Contents
 **NLP_scripts**<br>
 Contains files for content analysis of Missed Connections (see its [README](https://github.com/stong1108/CL_missedconn/tree/master/NLP_scripts) for more info).

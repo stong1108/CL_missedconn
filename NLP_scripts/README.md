@@ -1,5 +1,8 @@
 # Craigslist Missed Connections - NLP
 
+**Write-up of the Content Analysis project lives here:**
+http://http://taketwodatablog.com/craigslists-missed-connections/
+
 ### Contents
 
 **TopicModeling.py**<br>
