@@ -1,7 +1,7 @@
 # Craigslist Missed Connections
 
 **Write-up of the Content Analysis project lives here:**
-http://http://taketwodatablog.com/craigslists-missed-connections/
+<br>http://taketwodatablog.com/craigslists-missed-connections/
 
 ### Contents
 **NLP_scripts**<br>
