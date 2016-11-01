@@ -76,12 +76,12 @@ class MissedConn(object):
                 try:
                     if cutoff_dt > self._get_datetime(soup):
                         break
-                except (ValueError, IndexError):
+                except:
                     print url
                     continue
             try:
                 self._get_info(url)
-            except (ValueError, IndexError):
+            except:
                 print url
                 continue
             sleep(5 + 3*np.random.random()) # to emulate a real person
