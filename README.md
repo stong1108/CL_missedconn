@@ -8,7 +8,7 @@
 Contains files for content analysis of Missed Connections (see its [README](https://github.com/stong1108/CL_missedconn/tree/master/NLP_scripts) for more info).
 
 **webapp**<br>
-Contains files for the Missed Connections Explorer web app.
+Contains files for the Missed Connections Explorer web app running at http://missingpeople.solutions.
 
 **saved_maps**<br>
 Contains html files for interactive maps.
